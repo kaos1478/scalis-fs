@@ -1,10 +1,10 @@
 'use client'
 
 type TKey = string
-type TValue = string
+type TValue = string | number
 
 export const setLocalStorage = (key: TKey, value: TValue) => {
-  window.localStorage.setItem(key, value)
+  window.localStorage.setItem(key, JSON.stringify(value))
 }
 
 export const getLocalStorage = (key: TKey) => {
@@ -14,4 +14,17 @@ export const getLocalStorage = (key: TKey) => {
 
 export const removeLocalStorage = (key: TKey) => {
   window.localStorage.removeItem(key)
+}
+
+export const getUserDataLocalStorage = () => {
+  const data = window.localStorage.getItem('userData')
+  if (data) return JSON.parse(data)
+}
+
+export const updateUserDataLocalStorage = (key: TKey, value: TValue) => {
+  const data = getUserDataLocalStorage()
+  if (data) {
+    const newData = { ...data, [key]: value }
+    setLocalStorage('userData', newData)
+  }
 }
